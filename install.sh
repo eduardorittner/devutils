@@ -1,27 +1,16 @@
-if [[ $(id -u) != 0 ]]; then
-	echo "This script requires sudo privileges to copy files into /usr/local/bin, please"
-	exit 1
-fi
+cargo build --release
+cargo install --path ./
 
-cargo build -r --bins
-
-if [ $? -eq 0 ]; then
-		echo "Compilation succesful"
+if [[ ":$PATH:" == *":$HOME/.cargo/bin"* ]]; then
+		echo "Binaries installed."
 else
-		echo "[ERROR]: Compilation not succesful."
-		exit 1
-fi
+		echo "It looks like '~/.cargo/bin/' is not in path, would you like to add it? Y/n"
+		read add_to_path
 
-files=("bin" "octal" "dec" "hex")
-
-echo "Copy ${#files[@]} files into /usr/local/bin/ ? Y/n"
-read input < /dev/tty
-
-if [ -z "$input" ] || [ "$input" == "Y" ]; then
-	for str in ${files[@]}; do
-		cp "./target/debug/$str" "/usr/local/bin/"
-	done
-	echo "4 files copied into /usr/local/bin/"
-else
-	echo "No files were copied."
+		if [[ -z $add_to_path || "$add_to_path" == "y" || "$add_to_path" == "Y" ]]; then
+				echo "export PATH='~/.cargo.bin:$PATH'" >> ~/.bashrc
+				echo "~/.cargo/bin/ added to path, run 'source ~/.bashrc' for changes to take effect."
+		else
+				echo "~/.cargo/bin/ not added to path."
+		fi
 fi
