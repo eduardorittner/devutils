@@ -2,6 +2,8 @@
 
 Simple binary utilities suite for software developers.
 
+Currently comprised of only numeric base visualization and conversion.
+
 ## Installation
 
 After cloning the repo, simply run sudo ./install.sh which will compile the code and copy the binaries to /usr/local/bin/. If desired, it's possible to just compile the code yourself using cargo and use the generated binaries in /target/debug/ as you see fit.
