@@ -204,6 +204,10 @@ pub mod utils {
 
         let digits = ('0'..='9').chain('A'..='F').collect::<Vec<char>>();
 
+        if number == 0 {
+            s.push('0');
+        };
+
         while number != 0 {
             let digit = digits.get((number % base) as usize).unwrap();
             s.push(*digit);
@@ -212,7 +216,7 @@ pub mod utils {
 
         match base {
             2 => s.push_str("b0"),
-            8 => s.push_str("c0"),
+            8 => s.push_str("o0"),
             16 => s.push_str("x0"),
             _ => (),
         };
